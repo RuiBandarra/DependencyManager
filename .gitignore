@@ -1,0 +1,14 @@
+.classpath
+.history
+.idea
+.idea_modules
+.project
+.settings
+*.swp
+*.iml
+*.orig
+logs
+project/project
+project/target
+project/.sbtserver.lock
+target
