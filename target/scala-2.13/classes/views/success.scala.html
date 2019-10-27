@@ -1,0 +1,32 @@
+@(dependency: Dependency)
+
+        <div class="container-fluid">
+            <div class="row">
+                <h2 class="table-header">Results for @dependency :</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Group Id</th>
+                                <th>Artifact Id</th>
+                                <th>Version</th>
+                                <th>Download URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            @{
+                                var counter=1
+                                /*for(classpath <- dependency.classLoader.getClassPathString.split(":").map(_.trim).toList){
+                                        <td>counter</td>
+                                        <td>dependency.groupId</td>
+                                        <td>dependency.artifactId</td>
+                                        <td>dependency.version</td>
+                                        <td>classpath</td>
+                                    counter+=1
+                                }}*/
+                            </tr>
+                    </table>
+                </div>
+            </div>

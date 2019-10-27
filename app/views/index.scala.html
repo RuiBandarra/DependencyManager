@@ -1,0 +1,36 @@
+@import views.html.helper.inputText
+@import forms.DependencySearchForm
+
+@import play.api.Configuration
+@(form: Form[DependencySearchForm],playConfiguration:Configuration)(implicit messages: Messages)
+
+@main("Dependency Manager") {
+    @defining(play.core.PlayVersion.current) { version =>
+
+        <section id="content">
+            <div class="wrapper">
+                <article>
+                    <h2 class="sub-header">What is Dependency Manager</h2>
+                    <p>Dependency Manager programmatically retrieves Dependencies from the Maven Central, or the customized private repositories for snapshots and releases, and stores them in the local Maven repository. The classes in these Dependencies then get loaded into a Classloader and stored in cache for faster retrieval.</p>
+                    <p>One application for this code is that it can be used when we need to instantiate objects from classes at runtime, which were not available during compilation time, thus not part of the application's classpath.</p>
+                    <p>Once the dependency is retrieved, a URLClassLoader subtype will be available in the cache, and any class inside can be loaded and instantiated through Reflection (i.e <code>classLoader.loadClass("org.apache.commons.io.FileUtils").newInstance()</code>)</p>
+                    <p>In the interface we can order it to retrieve a Dependency transitively. We are then presented with a table containing the local Maven Repository's Path to each of the artifacts.</p>
+                    <h2 class="sub-header">What is included</h2>
+                    <p>Version @playConfiguration.getString("dependencyManagerVersion") of Dependency Manager provides the following features: </p>
+                    <ul class="list-group">
+                        <li class="list-group-item">- Repository Customization</li>
+                        <li class="list-group-item">- Repository Authentication through login in clear using settings.xml</li>
+                        <li class="list-group-item">- Repository Authentication through encrypted login using security-settings.xml</li>
+                    </ul>
+                    <h2 class="sub-header">How it works</h2>
+                    <p>Dependency Manager was written in Java using <a href="https://wiki.eclipse.org/Aether/What_Is_Aether">Eclipse Aether Library</a>, the library used by <a href="https://maven.apache.org/resolver/index.html">Maven's Artifact Resolver</a>.</p>
+                    <p>This web interface was created using Play Framework and Scala.</p>
+                    <p>Use the form below to use Dependency Manager to retrieve the URL for a Dependency of your own choice.</p>
+                </article>
+            </div>
+        </section>
+    @searchForm(form)
+    }
+
+}
+

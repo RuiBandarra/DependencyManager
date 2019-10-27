@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ..
+sbt -jvm-debug 5005
+cd test

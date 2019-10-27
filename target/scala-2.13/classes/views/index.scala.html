@@ -1,0 +1,35 @@
+@import views.html.helper.inputText
+@import forms.DependencySearchForm
+
+@import play.api.Configuration
+@(form: Form[DependencySearchForm],playConfiguration:Configuration)(implicit messages: Messages)
+
+@main("Dependency Manager") {
+    @defining(play.core.PlayVersion.current) { version =>
+
+        <section id="content">
+            <div class="wrapper">
+                <article>
+                    <h2 class="sub-header">What is Dependency Manager</h2>
+                    <p>Dependency Manager is a production ready library which programatically retrieves Dependencies from the Maven Central. It can be tested by using the interface in this page.</p>
+                    <h2 class="sub-header">What is included</h2>
+                    <p>Version @playConfiguration.getString("dependencyManagerVersion") of Dependency Manager provides the following features: </p>
+                    <ul class="list-group">
+                        <li class="list-group-item">- Repository Customization</li>
+                        <li class="list-group-item">- Repository Authentication through login in clear using settings.xml</li>
+                        <li class="list-group-item">- Repository Authentication through encrypted login using security-settings.xml</li>
+                    </ul>
+
+
+                    <h2 class="sub-header">How it works</h2>
+                    <p>This library was written in Java using <a href="https://wiki.eclipse.org/Aether/What_Is_Aether">Eclipse Aether Library</a>, the library used by <a href="https://maven.apache.org/resolver/index.html">Maven's Artifact Resolver</a>.</p>
+                    <p>This web interface was created using Play Framework and Scala and runs in Akka.</p>
+                    <p>Use the form below to use the library to retrieve the URL for a Dependency of your own choice.</p>
+                </article>
+            </div>
+        </section>
+    @searchForm(form)
+    }
+
+}
+
