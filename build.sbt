@@ -1,7 +1,7 @@
 name := """DependencyResolverWebApp"""
 organization := "com.example"
 
-version := "1.0-SNAPSHOT"
+version := "1.0-RC1"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
