@@ -26,22 +26,23 @@ class DependencyManagerController @Inject()(playConfiguration:Configuration, cc:
     Ok(views.html.index(DependencySearchForm.dependencySearchForm,playConfiguration))
   }
 
-  def retrieveDependencyClassPath(dependency:Dependency):Array[URL]= {
-    val classLoader:DependencyManagerClassLoader = DependencyManagerClassLoaderCache.getInstance().getClassLoader(dependency.toString)
-    classLoader.getURLs
-  }
-
-  def handleFormPost() = Action {  implicit request: Request[AnyContent] =>
+  /**
+    * Called by Javascript Router when Form is Submitted.
+    * @return
+    */
+  def handleFormSubmit() = Action { implicit request: Request[AnyContent] =>
     DependencySearchForm.dependencySearchForm.bindFromRequest().fold(
-      formWithErrors => {
+      formWithErrors =>  {
         // binding failure, you retrieve the form containing errors:
         BadRequest(views.html.searchForm(formWithErrors))
       },
       formData => {
         // binding success, you get the actual value.
         val dependency:Dependency=new Dependency(formData.groupId, formData.artifactId,formData.version)
-        val dependencyClassPathUrls:Array[URL] = retrieveDependencyClassPath(dependency)
-        val html=views.html.result.render(dependency,dependencyClassPathUrls)
+        val classLoader:DependencyManagerClassLoader = DependencyManagerClassLoaderCache.getInstance().getClassLoader(dependency.toString)
+        val dependencyClassPathUrls:Array[URL]=classLoader.getURLs
+
+        val html=views.html.resultsTable.render(dependency,dependencyClassPathUrls)
         Ok(html)
       }
     )

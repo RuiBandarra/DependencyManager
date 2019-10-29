@@ -2,24 +2,28 @@
 @import forms.DependencySearchForm
 @import views.html.helper.inputText
 @import forms.DependencySearchForm
+@import play.api.data.Form
 
 @(dependencySearchForm: Form[DependencySearchForm])(implicit messages: Messages)
 
-<section id="form">
+<section id="form-section">
     <div class="wrapper">
         <article>
             <h2 class="sub-header">Search for a dependency</h2>
-            @helper.form(action = routes.DependencyManagerController.handleFormPost()) {
+            @helper.form(action = routes.DependencyManagerController.handleFormSubmit,'id -> "form") {
                 @inputText(dependencySearchForm("groupId"),
-                '_label -> "Group ID"
+                    '_label -> "Group ID"
                 )
                 @inputText(dependencySearchForm("artifactId"),
                     '_label -> "Artifact ID")
                 @inputText(dependencySearchForm("version"),
                     '_label -> "Version")
-                <button type="submit" class="btn btn-primary">Search</button>
-                }
+                <button id="form-submit" type="submit" class="btn btn-primary">Search</button>
+            }
         </article>
     </div>
+</section>
+<section id="results">
+        <!-- To be filled in JS -->
 </section>
 
