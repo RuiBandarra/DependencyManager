@@ -5,7 +5,7 @@ $(document).ready(function() {
     });
 
     $('#form-submit').click(function () {
-        jsRoutes.controllers.DependencyManagerController.handleFormSubmit().ajax({
+        jsRoutes.controllers.DependencyResolverController.handleFormSubmit().ajax({
             data: $("#form").serialize(),
             success: function (data) {
                 $('#results').html(data)

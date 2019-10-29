@@ -20,48 +20,48 @@ import java.util.List;
  */
 
 @Singleton
-public class DependencyManagerClassLoaderCache {
+public class DependencyResolverClassLoaderCache {
   private final Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   private static DependencyResolver dependencyResolver;
 
-  private HashMap<String, DependencyManagerClassLoader> cache = new HashMap<>();
+  private HashMap<String, DependencyResolverClassLoader> cache = new HashMap<>();
 
-  private static DependencyManagerClassLoaderCache instance=null;
+  private static DependencyResolverClassLoaderCache instance=null;
 
-  public static DependencyManagerClassLoaderCache getInstance(){
+  public static DependencyResolverClassLoaderCache getInstance(){
     if(instance==null){
-      instance=new DependencyManagerClassLoaderCache();
+      instance=new DependencyResolverClassLoaderCache();
     }
     return instance;
   }
 
   public static void initialize(DependencyResolver dependencyResolver){
-    DependencyManagerClassLoaderCache.dependencyResolver =dependencyResolver;
+    DependencyResolverClassLoaderCache.dependencyResolver =dependencyResolver;
   }
 
-  private DependencyManagerClassLoaderCache(){
+  private DependencyResolverClassLoaderCache(){
   }
 
-  public DependencyManagerClassLoader getClassLoader(List<String> dependencies) {
+  public DependencyResolverClassLoader getClassLoader(List<String> dependencies) {
     //get all the class loaders
-    List<DependencyManagerClassLoader> dependencyManagerClassLoaderList =new ArrayList<>();
+    List<DependencyResolverClassLoader> DependencyResolverClassLoaderList =new ArrayList<>();
     for(String dependency:dependencies){
-        dependencyManagerClassLoaderList.add(getClassLoader(dependency));
+        DependencyResolverClassLoaderList.add(getClassLoader(dependency));
     }
 
     //Concatenate class loaders
     List<URL> urls=new ArrayList<>();
-    for(DependencyManagerClassLoader dependencyManagerClassLoader : dependencyManagerClassLoaderList){
-      List<URL> classLoaderUrls=Arrays.asList(dependencyManagerClassLoader.getURLs());
+    for(DependencyResolverClassLoader DependencyResolverClassLoader : DependencyResolverClassLoaderList){
+      List<URL> classLoaderUrls=Arrays.asList(DependencyResolverClassLoader.getURLs());
       urls.addAll(classLoaderUrls);
     }
     URL[] urlsArray=urls.toArray(new URL[urls.size()]);
-    DependencyManagerClassLoader dependencyManagerClassLoader = new DependencyManagerClassLoader(urlsArray);
-    return dependencyManagerClassLoader;
+    DependencyResolverClassLoader DependencyResolverClassLoader = new DependencyResolverClassLoader(urlsArray);
+    return DependencyResolverClassLoader;
   }
 
-  public DependencyManagerClassLoader getClassLoader(String dependency) {
+  public DependencyResolverClassLoader getClassLoader(String dependency) {
       if (!cache.containsKey(dependency)) {
         List<String> dependenciesClasspathList = dependencyResolver.resolve(new ArrayList<String>(){{add(dependency);}});
         List<URL> urls=new ArrayList<>();
@@ -71,14 +71,14 @@ public class DependencyManagerClassLoaderCache {
             URL url = new URL(dependencyClasspath);
             urls.add(url);
           } catch (MalformedURLException e) {
-            logger.error("Invalid URL in DependencyManagerClassLoader: "+ dependencyClasspath);
+            logger.error("Invalid URL in DependencyResolverClassLoader: "+ dependencyClasspath);
           }
         }
         if(!urls.isEmpty()) {
           URL[] urlsArray = urls.toArray(new URL[urls.size()]);
-          DependencyManagerClassLoader dependencyManagerClassLoader = new DependencyManagerClassLoader(urlsArray);
-          dependencyManagerClassLoader.setClassPathString(urls);
-          cache.put(dependency, dependencyManagerClassLoader);
+          DependencyResolverClassLoader DependencyResolverClassLoader = new DependencyResolverClassLoader(urlsArray);
+          DependencyResolverClassLoader.setClassPathString(urls);
+          cache.put(dependency, DependencyResolverClassLoader);
         }
       }
     return cache.get(dependency);

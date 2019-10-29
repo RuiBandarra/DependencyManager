@@ -3,12 +3,12 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET     /                       controllers.DependencyManagerController.index
+GET     /                       controllers.DependencyResolverController.index
 
 GET     /javascriptRoutes      controllers.JavascriptRoutesController.javascriptRoutes
 
 +nocsrf
-POST     /handleFormSubmit             controllers.DependencyManagerController.handleFormSubmit
+POST     /handleFormSubmit             controllers.DependencyResolverController.handleFormSubmit
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

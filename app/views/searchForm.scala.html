@@ -10,7 +10,7 @@
     <div class="wrapper">
         <article>
             <h2 class="sub-header">Search for a dependency</h2>
-            @helper.form(action = routes.DependencyManagerController.handleFormSubmit,'id -> "form") {
+            @helper.form(action = routes.DependencyResolverController.handleFormSubmit,'id -> "form") {
                 @inputText(dependencySearchForm("groupId"),
                     '_label -> "Group ID"
                 )

@@ -10,7 +10,7 @@ class JavascriptRoutesController@Inject()(playConfiguration:Configuration, cc: C
   def javascriptRoutes = Action { implicit request =>
     Ok(
       JavaScriptReverseRouter("jsRoutes")(
-        routes.javascript.DependencyManagerController.handleFormSubmit
+        routes.javascript.DependencyResolverController.handleFormSubmit
       )
     ).as(MimeTypes.JAVASCRIPT)
   }

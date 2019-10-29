@@ -1,7 +1,7 @@
 package controllers
 
 import java.net.URL
-import dependencymanagement.loading.{DependencyManagerClassLoader, DependencyManagerClassLoaderCache}
+import dependencymanagement.loading.{DependencyResolverClassLoader, DependencyResolverClassLoaderCache}
 import forms.DependencySearchForm
 import javax.inject.Inject
 import play.api.mvc._
@@ -12,7 +12,7 @@ import play.api.Configuration
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
-class DependencyManagerController @Inject()(playConfiguration:Configuration, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class DependencyResolverController @Inject()(playConfiguration:Configuration, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport {
   private val logger = play.api.Logger(this.getClass)
 
   /**
@@ -39,7 +39,7 @@ class DependencyManagerController @Inject()(playConfiguration:Configuration, cc:
       formData => {
         // binding success, you get the actual value.
         val dependency:Dependency=new Dependency(formData.groupId, formData.artifactId,formData.version)
-        val classLoader:DependencyManagerClassLoader = DependencyManagerClassLoaderCache.getInstance().getClassLoader(dependency.toString)
+        val classLoader:DependencyResolverClassLoader = DependencyResolverClassLoaderCache.getInstance().getClassLoader(dependency.toString)
         val dependencyClassPathUrls:Array[URL]=classLoader.getURLs
 
         val html=views.html.resultsTable.render(dependency,dependencyClassPathUrls)

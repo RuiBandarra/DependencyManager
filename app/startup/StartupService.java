@@ -1,7 +1,7 @@
 package startup;
 
 import com.typesafe.config.ConfigException;
-import dependencymanagement.loading.DependencyManagerClassLoaderCache;
+import dependencymanagement.loading.DependencyResolverClassLoaderCache;
 import dependencymanagement.resolution.DependencyResolver;
 import org.apache.commons.validator.routines.UrlValidator;
 import play.Logger;
@@ -23,10 +23,10 @@ public class StartupService {
   private final Environment environment;
   private final Configuration configuration;
 
-  private final String DEPENDENCY_MANAGER_REPOSITORIES ="dependency.manager.repositories";
-  private final String DEPENDENCY_MANAGER_PRIVATE_REPOSITORY_ARTIFACTS_IDS ="dependency.manager.private.repository.artifacts.ids";
-  private final String DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_RELEASES_ID ="dependency.manager.private.repositories.releases.id";
-  private final String DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID ="dependency.manager.private.repositories.snapshots.id";
+  private final String DEPENDENCY_RESOLVER_REPOSITORIES ="dependency.resolver.repositories";
+  private final String DEPENDENCY_RESOLVER_PRIVATE_REPOSITORY_ARTIFACTS_IDS ="dependency.resolver.private.repository.artifacts.ids";
+  private final String DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_RELEASES_ID ="dependency.resolver.private.repositories.releases.id";
+  private final String DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID ="dependency.resolver.private.repositories.snapshots.id";
   private static final DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
   @Inject
@@ -40,9 +40,9 @@ public class StartupService {
     LinkedHashMap<String,String> repositories=new LinkedHashMap<>();
     String repositoriesString="";
     try{
-      repositoriesString = configuration.underlying().getString(DEPENDENCY_MANAGER_REPOSITORIES);
+      repositoriesString = configuration.underlying().getString(DEPENDENCY_RESOLVER_REPOSITORIES);
     }catch(ConfigException.Missing|ConfigException.WrongType e){
-      Logger.error(DEPENDENCY_MANAGER_REPOSITORIES +" not set in application.conf. Assuming default values.");
+      Logger.error(DEPENDENCY_RESOLVER_REPOSITORIES +" not set in application.conf. Assuming default values.");
     }
     if (!repositoriesString.isEmpty()) {
       String[] customSchemes = { "https", "http", "file" };
@@ -66,7 +66,7 @@ public class StartupService {
 
     List<String> privateRepositoryArtifactsIds=new ArrayList<>();
     try {
-      String privateRepositoryArtifactsIdsApplicationVariable=configuration.underlying().getString(DEPENDENCY_MANAGER_PRIVATE_REPOSITORY_ARTIFACTS_IDS);
+      String privateRepositoryArtifactsIdsApplicationVariable=configuration.underlying().getString(DEPENDENCY_RESOLVER_PRIVATE_REPOSITORY_ARTIFACTS_IDS);
       if(!privateRepositoryArtifactsIdsApplicationVariable.equals("")){
         privateRepositoryArtifactsIds.addAll(Arrays.asList(privateRepositoryArtifactsIdsApplicationVariable.split(";")));
       }
@@ -76,20 +76,20 @@ public class StartupService {
 
     String dependencyResolverRepositoriesReleasesId="";
     try {
-      dependencyResolverRepositoriesReleasesId = configuration.underlying().getString(DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_RELEASES_ID);
+      dependencyResolverRepositoriesReleasesId = configuration.underlying().getString(DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_RELEASES_ID);
     }catch(ConfigException.Missing|ConfigException.WrongType e){
-      Logger.error(DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_RELEASES_ID +"not set in application.conf. Assuming default values.");
+      Logger.error(DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_RELEASES_ID +"not set in application.conf. Assuming default values.");
     }
 
     String dependencyResolverRepositoriesSnapshotsId="";
     try {
-      dependencyResolverRepositoriesSnapshotsId = configuration.underlying().getString(DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID);
+      dependencyResolverRepositoriesSnapshotsId = configuration.underlying().getString(DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID);
     }catch(ConfigException.Missing|ConfigException.WrongType e){
-      Logger.error(DEPENDENCY_MANAGER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID +" not set in application.conf. Assuming default values.");
+      Logger.error(DEPENDENCY_RESOLVER_PRIVATE_REPOSITORIES_SNAPSHOTS_ID +" not set in application.conf. Assuming default values.");
     }
 
     DependencyResolver dependencyResolver = new DependencyResolver(repositories,privateRepositoryArtifactsIds,dependencyResolverRepositoriesReleasesId,dependencyResolverRepositoriesSnapshotsId);
-    DependencyManagerClassLoaderCache cache= DependencyManagerClassLoaderCache.getInstance();
+    DependencyResolverClassLoaderCache cache= DependencyResolverClassLoaderCache.getInstance();
     cache.initialize(dependencyResolver);
 
   }

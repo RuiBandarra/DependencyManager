@@ -13,10 +13,10 @@ import java.util.List;
  * @since 1.0.0
  *
  */
-public class DependencyManagerClassLoader extends URLClassLoader{
+public class DependencyResolverClassLoader extends URLClassLoader{
   private String classPathString;
 
-  public DependencyManagerClassLoader(URL[] urls) {
+  public DependencyResolverClassLoader(URL[] urls) {
     super(urls);
     classPathString=getClassPathStringFromUrls(urls);
   }
